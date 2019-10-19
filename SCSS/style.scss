@@ -1,0 +1,15 @@
+html, body{
+	margin: 0 auto;
+	height:100%;
+	//background-color: $bodyColor;
+}
+
+.labelTop{
+	margin-top: 1em;
+}
+
+.controledWidth {
+  @media (min-width: 1300px) {
+    max-width: 1250px;
+  }
+}

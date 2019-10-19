@@ -1,0 +1,15 @@
+html, body {
+  margin: 0 auto;
+  height: 100%;
+}
+
+.labelTop {
+  margin-top: 1em;
+}
+
+@media (min-width: 1300px) {
+  .controledWidth {
+    max-width: 1250px;
+  }
+}
+/*# sourceMappingURL=style.css.map */
