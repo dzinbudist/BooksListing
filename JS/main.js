@@ -94,16 +94,64 @@ let storedBooks = [
     isbn: "GR1238",
     year: 2016,
     pages: 400
+  },
+  {
+    category: "Mokslinė fantastika",
+    title: "The Blazing World and Other Writings",
+    author: "Autorius",
+    isbn: "GR123897",
+    year: 2019,
+    pages: 400
+  },
+  {
+    category: "Mokslinė fantastika",
+    title: "Foundation",
+    author: "Stanislaw Lem",
+    isbn: "GR1238133",
+    year: 2016,
+    pages: 400
+  },
+  {
+    category: "Mokslinė fantastika",
+    title: "The War of the Worlds",
+    author: "H. G. Wells",
+    isbn: "GR1238",
+    year: 2016,
+    pages: 400
+  },
+  {
+    category: "Mokslinė fantastika",
+    title: "Frankenstein",
+    author: "Marry Shelley",
+    isbn: "GR1238",
+    year: 2016,
+    pages: 400
+  },
+  {
+    category: "Fantasy",
+    title: "Lord of the rings",
+    author: "J.R.R Tolkien",
+    isbn: "GR1238454",
+    year: 2015,
+    pages: 400
+  },
+  {
+    category: "Fantasy",
+    title: "Harry Potter",
+    author: "Autorius",
+    isbn: "GR1238454",
+    year: 2015,
+    pages: 400
+  },
+  {
+    category: "Trileriai",
+    title: "Jurasic Park",
+    author: "Michael Crichton",
+    isbn: "GR1238454",
+    year: 2015,
+    pages: 400
   }
 ];
-
-// class Book {
-//   constructor(title, author, isbn) {
-//     this.title = title;
-//     this.author = author;
-//     this.isbn = isbn;
-//   }
-// }
 
 class UI {
   static displayBooks(bookList) {
@@ -114,7 +162,12 @@ class UI {
   static addookToList(book, aIndex) {
     const list = document.querySelector('#book-list');
     const row = document.createElement('tr');
-    row.id = aIndex;
+
+    storedBooks.forEach((anItem, i) => {
+      if (anItem.title === book.title & anItem.isbn === book.isbn) {
+        row.id = i;
+      }
+    });
 
     row.innerHTML = `
       <td>${book.category}</td>
@@ -183,15 +236,82 @@ class UI {
       aParent.removeChild(child);
       child = aParent.lastElementChild;
     }
-    //storedBooks = storedBooks.splice(1, aParent.id);
     delete storedBooks[aParent.id];
     aParent.remove();
+  }
+
+  static doSearch() {
+    let filteredBooks = [];
+    let aValue = categorySelect.value;
+    let aSearchText = aSearch.value;
+    //alert(aSearchText);
+
+    if (aSearchText == '') {
+      UI.clearBooks();
+      UI.displayBooks(storedBooks);
+    }
+    else if (aValue == 'all') {
+      storedBooks.forEach((anItem) => {
+        if (anItem.title.toUpperCase().includes(aSearchText.toUpperCase())) {
+          filteredBooks.push(anItem);
+        }
+        else if (anItem.author.toUpperCase().includes(aSearchText.toUpperCase())) {
+          filteredBooks.push(anItem);
+        }
+        else if (anItem.isbn.toUpperCase().includes(aSearchText.toUpperCase())) {
+          filteredBooks.push(anItem);
+        }
+        else if (anItem.year.toString().includes(aSearchText.toUpperCase())) {
+          filteredBooks.push(anItem);
+        }
+      });
+    }
+    else {
+      storedBooks.forEach((anItem) => {
+        if (anItem.category === aValue) {
+          if (anItem.title.toUpperCase().includes(aSearchText.toUpperCase())) {
+            filteredBooks.push(anItem);
+          }
+          else if (anItem.author.toUpperCase().includes(aSearchText.toUpperCase())) {
+            filteredBooks.push(anItem);
+          }
+          else if (anItem.isbn.toUpperCase().includes(aSearchText.toUpperCase())) {
+            filteredBooks.push(anItem);
+          }
+          else if (anItem.year.toString().includes(aSearchText.toUpperCase())) {
+            filteredBooks.push(anItem);
+          }
+        }
+      });
+    }
+
+    if (filteredBooks.length > 0) {
+      UI.clearBooks();
+      UI.displayBooks(filteredBooks);
+    }
   }
 }
 
 const categorySelect = document.getElementById('categorySelect');
+categorySelect.value = 'all';
 categorySelect.addEventListener('change', function () { UI.switchCategory(this.value); }, false);
 
 const btnAddBook = document.querySelector('#btnAddBook');
 document.addEventListener('DOMContentLoaded', UI.displayBooks(storedBooks));
 
+const aSearch = document.getElementById('search');
+aSearch.value = '';
+aSearch.addEventListener("keyup", function (event) {
+  if (event.keyCode === 13) {
+    event.preventDefault();
+    //alert('qq');
+    UI.doSearch();
+  }
+}, false);
+
+document.querySelector('#category').value = 'Detektyvai'
+document.querySelector('#title').value = '';
+document.querySelector('#author').value = '';
+document.querySelector('#isbn').value = '';
+document.querySelector('#year').value = '';
+document.querySelector('#pages').value = '';
